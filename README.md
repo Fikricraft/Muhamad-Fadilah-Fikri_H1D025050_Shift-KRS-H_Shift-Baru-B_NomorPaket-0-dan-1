@@ -66,6 +66,19 @@ Mode pembuktian berjalan sendiri tanpa input. Kalau tidak ada input yang masuk,
 aksi battle otomatis memilih Serang, jadi outputnya selalu sama dan bisa
 diregenerasi kapan saja.
 
+### Akun demo untuk asprak
+
+Akun demo sudah tersedia otomatis setiap kali program dijalankan:
+
+| Username | Password |
+|---|---|
+| `user` | `pass` |
+
+Jalankan `java -cp bin Main game`, pilih **2. Masuk (login)**, lalu masukkan
+`user` sebagai username dan `pass` sebagai kata sandi. Akun ini hanya akun demo
+lokal di memori; akun baru yang dibuat selama program berjalan juga tidak
+disimpan setelah program ditutup.
+
 Kalau mau menyimpan output ke berkas:
 
 ```bash
@@ -126,13 +139,15 @@ tidak hilang:
 
 ![Screenshot terbaru awal](screenshot-output-baru-1.png)
 
-Screenshot terbaru, UJI 1 sampai 3.
+Screenshot terbaru: login akun demo `user`, lalu tampilan awal game setelah berhasil masuk.
 
 ![Screenshot terbaru akhir](screenshot-output-baru-2.png)
 
-Screenshot terbaru, UJI 10, 11, dan ringkasan.
+Screenshot terbaru: menu **Info akun / Logout** yang menampilkan username `user`,
+status login, jumlah akun terdaftar, dan konfirmasi logout.
 
-Semua screenshot dihasilkan dari `output.txt` yang diregenerasi lewat
+Semua screenshot terbaru dihasilkan dari sesi game teruji dengan akun demo
+`user` / `pass`. Output pembuktian tetap diregenerasi lewat:
 `java -cp bin Main > output.txt 2>&1`.
 
 ---

@@ -12,6 +12,12 @@ public class Akun {
     /* penyimpanan seluruh akun terdaftar, dibagikan lintas objek */
     private static final Map<String, Akun> DAFTAR_AKUN = new HashMap<>();
 
+    /* akun demo untuk pemeriksaan asprak: user / pass */
+    static {
+        Akun akunDemo = new Akun("user", "pass");
+        DAFTAR_AKUN.put(akunDemo.username, akunDemo);
+    }
+
     /* username bersifat kekal, tidak bisa diubah setelah akun dibuat */
     private final String username;
 
