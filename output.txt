@@ -1,0 +1,455 @@
+##########################################################
+#   RESPONSI AKHIR PBO - SISTEM GAME                     #
+#   Muhamad Fadilah Fikri - H1D025050                    #
+#   Tema: digit terakhir NIM 0 -> SISTEM GAME            #
+#   Dunia: Lembah Soedirman
+##########################################################
+
+==========================================================
+  UJI 1 : [1] STATE & BEHAVIOR - atribut, method void, method return value
+==========================================================
+  -- STATE awal (dibaca lewat getter)
+    nama     : Arjuna
+    hp       : 100
+    level    : 1
+    exp      : 0
+  -- BEHAVIOR: method void (setter) mengubah state
+    nama setelah setter : Arjuna Wibawa
+    mana setelah setter : 20
+  -- BEHAVIOR: method void tambahExp() memicu perubahan level
+    [*] Arjuna Wibawa memperoleh 250 exp (total 250).
+    [+] Arjuna Wibawa NAIK LEVEL menjadi 2 (HP maksimal 120).
+      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 80.
+    [+] Arjuna Wibawa NAIK LEVEL menjadi 3 (HP maksimal 140).
+      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 80.
+  -- BEHAVIOR: method return value
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    hitungKekuatanTotal() = 60
+    isAlive()             = true
+    getPersenHp()         = 1.0
+
+==========================================================
+  UJI 2 : [2] IMMUTABILITY - public static final & private final
+==========================================================
+  -- Konstanta global (public static final) pada class Karakter
+    Karakter.NAMA_DUNIA    = Lembah Soedirman
+    Karakter.MAX_LEVEL     = 50
+    Karakter.HP_DASAR      = 100
+    Karakter.EXP_PER_LEVEL = 100
+    Karakter.RASIO_KRITIS  = 0.3
+  -- Atribut instans kekal (private final) - hanya punya getter, tanpa setter
+    hero.getIdKarakter()      = PHL-BIMA
+    hero.getElemen()          = Cahaya
+    hero.getKelas()           = Paladin
+    hero.getManaMaksimal()    = 70
+    monster.getIdKarakter()   = MNS-GONDORUWO
+    monster.getHabitat()      = Gua Utara
+    -> tidak ada setter untuk atribut di atas, nilainya tidak dapat diubah.
+
+==========================================================
+  UJI 3 : [3] ENKAPSULASI & OVERLOADING - private + getter/setter + this + konstruktor ganda
+==========================================================
+  -- Seluruh atribut private, diakses lewat getter/setter (memakai keyword this)
+    hp awal   : 100
+    hp diubah : 55
+  -- Konstruktor overload #1 : Pahlawan(String nama)
+      [Pahlawan] mana 60 cukup -> bonus sihir +15
+    Pahlawan[PHL-SRIKANDI | Srikandi | elemen=Cahaya | Lv.1 | HP 100/100 | kekuatan=30] <Petarung | mana 60/60 | ramuan 5 | koin 0 | lahir di Kota A>
+  -- Konstruktor overload #2 : Pahlawan(String, int, String, int)
+      [Pahlawan] mana 120 cukup -> bonus sihir +15
+    Pahlawan[PHL-SRIKANDI | Srikandi | elemen=Cahaya | Lv.1 | HP 100/100 | kekuatan=60] <Pemanah | mana 120/120 | ramuan 5 | koin 0 | lahir di Kota A>
+  -- Konstruktor overload #3 : Karakter(String nama, int kekuatanDasar) via Monster
+      [Monster] masih tenang -> kekuatan normal
+    Monster[KAR-000 | Jelma | elemen=Netral | Lv.1 | HP 100/100 | kekuatan=17] <habitat=Hutan Pinus | keganasan=1 | mengamuk=false>
+  -- Konstruktor overload #4 : Monster(String, int, String, int)
+      [Monster] masih tenang -> kekuatan normal
+    Monster[MNS-JELMA | Jelma | elemen=Kegelapan | Lv.1 | HP 100/100 | kekuatan=49] <habitat=Rawa Selatan | keganasan=4 | mengamuk=false>
+  -- Konstruktor overload #5 : Boss(String nama)
+      [Boss] fase 1 berjalan normal
+    Boss[KAR-000 | Rakus | elemen=Netral | Lv.1 | HP 100/100 | kekuatan=36] <Penjaga Lembah | fase 1/3 | enrage=false>
+  -- Konstruktor overload #6 : Boss(String, int, String, int)
+      [Boss] fase 1 berjalan normal
+    Boss[BOS-RAKUS | Rakus | elemen=Bayangan | Lv.1 | HP 100/100 | kekuatan=76] <Raja Bayangan | fase 1/4 | enrage=false>
+
+==========================================================
+  UJI 4 : [4] INHERITANCE - satu superclass abstrak, tiga subclass
+==========================================================
+    Karakter (abstract)
+      |-- Pahlawan  extends Karakter
+      |-- Monster   extends Karakter
+      |-- Boss      extends Karakter
+    Main adalah class terpisah dari seluruh class domain.
+  -- Pembuktian relasi pewarisan dengan instanceof
+    hero    instanceof Karakter : true
+    monster instanceof Karakter : true
+    boss    instanceof Karakter : true
+  -- Subclass mewarisi atribut & method superclass
+    hero.getLevel() (warisan)   : 5
+    boss.getHpMaksimal() (warisan): 100
+    monster.isAlive() (warisan) : true
+
+==========================================================
+  UJI 5 : [5] SUPER CHAINING - super(...) pada konstruktor & super.namaMethod()
+==========================================================
+  -- super(...) pada konstruktor subclass mengisi atribut final superclass
+    idKarakter = PHL-KUMBAKARNA  (dibentuk oleh super(...))
+    elemen     = Cahaya  (dibentuk oleh super(...))
+  -- super.naikLevel() di dalam Pahlawan.naikLevel()
+    level sebelum : 1, mana sebelum : 10
+    [+] Kumbakarna NAIK LEVEL menjadi 2 (HP maksimal 120).
+      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 100.
+    level sesudah : 2, mana sesudah : 100
+    -> baris NAIK LEVEL berasal dari super, baris mana dari subclass.
+  -- super.toString() di dalam toString() subclass
+      [Pahlawan] mana 100 cukup -> bonus sihir +15
+    Pahlawan[PHL-KUMBAKARNA | Kumbakarna | elemen=Cahaya | Lv.2 | HP 120/120 | kekuatan=60] <Berserker | mana 100/100 | ramuan 5 | koin 0 | lahir di Kota A>
+  -- super.serang() di dalam Boss.serang()
+    Boss menyerang dua kali karena memanggil super.serang() dua kali:
+      [Boss] fase 1 AMUKAN -> bonus +40
+    > Rahwana menyerang Bayangan Kecil dengan damage 26.
+      [Monster] sisa HP 74/100.
+      [Boss] mode amukan -> serangan kedua menyusul!
+      [Boss] fase 1 AMUKAN -> bonus +40
+    > Rahwana menyerang Bayangan Kecil dengan damage 26.
+      [Monster] sisa HP 48/100.
+
+==========================================================
+  UJI 6 : [6] METHOD OVERRIDING - @Override pada subclass
+==========================================================
+  -- hitungKekuatanTotal() ditimpa berbeda pada setiap subclass
+    Pahlawan:
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      hasil = 48
+    Monster:
+      [Monster] masih tenang -> kekuatan normal
+      hasil = 35
+    Boss:
+      [Boss] fase 1 berjalan normal
+      hasil = 68
+  -- toString() ditimpa dan memanggil super.toString()
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    Pahlawan[PHL-SENA | Sena | elemen=Cahaya | Lv.1 | HP 100/100 | kekuatan=48] <Ksatria | mana 80/80 | ramuan 5 | koin 0 | lahir di Kota A>
+      [Monster] masih tenang -> kekuatan normal
+    Monster[MNS-GONDORUWO | Gondoruwo | elemen=Kegelapan | Lv.1 | HP 100/100 | kekuatan=35] <habitat=Gua Utara | keganasan=3 | mengamuk=false>
+      [Boss] fase 1 berjalan normal
+    Boss[BOS-RAKUS | Rakus | elemen=Bayangan | Lv.1 | HP 100/100 | kekuatan=68] <Raja Bayangan | fase 1/3 | enrage=false>
+  -- Boss menimpa serang() milik Karakter
+      [Boss] fase 1 berjalan normal
+    > Rakus menyerang Korban dengan damage 17.
+      [Monster] sisa HP 83/100.
+    damage total = 17
+
+==========================================================
+  UJI 7 : [7] ABSTRACT CLASS - superclass abstract dengan abstract method
+==========================================================
+    Modifier.isAbstract(Karakter.class) = true
+    Karakter tidak dapat diinstansiasi langsung:
+      // Karakter k = new Karakter("X");  -> error: Karakter is abstract
+  -- Daftar abstract method yang wajib diimplementasikan subclass
+      abstract int hitungKekuatanTotal(...)
+      abstract void terimaSerangan(...)
+  -- Setiap subclass memberikan implementasi konkret
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    Pahlawan.hitungKekuatanTotal() = 50
+      [Monster] masih tenang -> kekuatan normal
+    Monster.hitungKekuatanTotal()  = 30
+      [Boss] fase 1 berjalan normal
+    Boss.hitungKekuatanTotal()     = 66
+    ketiga subclass juga mengimplementasikan terimaSerangan().
+
+==========================================================
+  UJI 8 : [8] PERCABANGAN - if/else membaca dan mengubah state internal
+==========================================================
+  -- A. Pahlawan: percabangan pada mana dan HP
+    [state: mana penuh, HP penuh]
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      kekuatan = 50
+    [state: mana menipis setelah setMana(10)]
+      [Pahlawan] mana 10 menipis -> penalti -10
+      kekuatan = 25
+    [state: mana penuh kembali, HP 20/100 - kritis]
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      [Pahlawan] HP kritis -> semangat juang +25
+      kekuatan = 75
+  -- B. Monster: state berubah otomatis saat HP rendah (mengamuk)
+    mengamuk sebelum diserang : false
+      [Monster] masih tenang -> kekuatan normal
+      kekuatan = 37
+    monster diserang hingga HP tersisa di bawah 40%:
+      [Monster] HP tersisa 30 -> Gondoruwo MENGAMUK!
+    mengamuk sesudah diserang : true
+      [Monster] sedang MENGAMUK -> kekuatan dilipatgandakan
+      kekuatan = 74
+  -- C. Boss: fase berubah mengikuti sisa HP
+      [Boss] fase 1 berjalan normal
+      HP 300 -> fase 1, kekuatan 56
+      [Boss] HP 180/300 -> FASE BERUBAH dari 1 ke 2!
+      [Boss] fase 2 berjalan normal
+      HP 180 -> fase 2, kekuatan 76
+      [Boss] HP 80/300 -> FASE BERUBAH dari 2 ke 3!
+      [Boss] fase 3 berjalan normal
+      HP 80 -> fase 3, enrage false, kekuatan 96
+
+==========================================================
+  UJI 9 : [9] POLIMORFISME INTERFACE - referensi bertipe interface
+==========================================================
+  -- Bentuk literal: NamaInterface obj = new Subclass();
+    Attackable penyerang = hero;  -> isAlive() = true
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Sena menyerang Gondoruwo dengan damage 12.
+      [Monster] sisa HP 88/100.
+    Levelable penumbuh   = hero;  -> level = 1
+    [*] Sena memperoleh 100 exp (total 100).
+    [+] Sena NAIK LEVEL menjadi 2 (HP maksimal 120).
+      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 80.
+    ItemUsable pemakai   = hero;  -> jumlah item = 5
+      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 120/120.
+  -- Dynamic dispatch: array bertipe superclass, tiap elemen memakai override-nya sendiri
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    Sena (Pahlawan) -> kekuatan 55
+      [Monster] masih tenang -> kekuatan normal
+    Gondoruwo (Monster) -> kekuatan 30
+      [Boss] fase 1 berjalan normal
+    Rakus (Boss) -> kekuatan 66
+  -- Interface sebagai parameter method (Guild menghitung kekuatan seluruh anggota)
+    [+] Sena bergabung dengan Ksatria Soedirman.
+    [+] Gondoruwo bergabung dengan Ksatria Soedirman.
+    [+] Rakus bergabung dengan Ksatria Soedirman.
+    Daftar anggota Ksatria Soedirman (3 orang):
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      - Pahlawan[PHL-SENA | Sena | elemen=Cahaya | Lv.2 | HP 120/120 | kekuatan=55] <Ksatria | mana 80/80 | ramuan 4 | koin 0 | lahir di Kota A>
+      [Monster] masih tenang -> kekuatan normal
+      - Monster[MNS-GONDORUWO | Gondoruwo | elemen=Kegelapan | Lv.1 | HP 88/100 | kekuatan=30] <habitat=Gua | keganasan=2 | mengamuk=false>
+      [Boss] fase 1 berjalan normal
+      - Boss[BOS-RAKUS | Rakus | elemen=Bayangan | Lv.1 | HP 100/100 | kekuatan=66] <Raja | fase 1/3 | enrage=false>
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      [Monster] masih tenang -> kekuatan normal
+      [Boss] fase 1 berjalan normal
+    total kekuatan guild = 151
+
+==========================================================
+  UJI 10 : [10] MULTIPLE INTERFACE - implements lebih dari satu interface
+==========================================================
+    public class Pahlawan extends Karakter
+            implements ItemUsable, Levelable, Attackable
+    -> satu objek yang sama dipanggil lewat tiga tipe interface berbeda.
+  -- Lewat interface Attackable
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Sena menyerang Gondoruwo dengan damage 12.
+      [Monster] sisa HP 88/100.
+  -- Lewat interface ItemUsable
+    item sebelum = 5
+      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 70/100.
+    item sesudah = 4
+  -- Lewat interface Levelable
+    level sebelum = 1
+    [*] Sena memperoleh 100 exp (total 100).
+    [+] Sena NAIK LEVEL menjadi 2 (HP maksimal 120).
+      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 80.
+    level sesudah = 2
+  -- Ketiganya menunjuk objek yang sama
+    (a == i) = true , (i == l) = true
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    Pahlawan[PHL-SENA | Sena | elemen=Cahaya | Lv.2 | HP 120/120 | kekuatan=55] <Ksatria | mana 80/80 | ramuan 4 | koin 0 | lahir di Kota A>
+
+==========================================================
+  UJI 11 : [11] INTEGRASI - pertarungan penuh memakai seluruh konsep di atas
+==========================================================
+    [+] Fadilah bergabung dengan Ksatria Soedirman.
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    Pahlawan[PHL-FADILAH | Fadilah | elemen=Cahaya | Lv.1 | HP 100/100 | kekuatan=54] <Ksatria Soedirman | mana 80/80 | ramuan 5 | koin 0 | lahir di Kota A>
+      [Boss] fase 1 berjalan normal
+    Boss[BOS-RAKUS | Rakus | elemen=Bayangan | Lv.1 | HP 90/90 | kekuatan=56] <Raja Bayangan | fase 1/3 | enrage=false>
+    PERTARUNGAN: Fadilah vs Rakus (12 ronde maksimal)
+    ==============================
+    --- Ronde 1 ---
+    Fadilah [HP 100/100 | Mana 80/80]
+    Lawan: Rakus [HP 90/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Fadilah menyerang Rakus dengan damage 13.
+      [Boss] sisa HP 77/90 (fase 1).
+    --- Giliran Lawan ---
+      [Boss] fase 1 berjalan normal
+    > Rakus menyerang Fadilah dengan damage 14.
+      [Pahlawan] sisa HP 86/100.
+    Rakus menyerang! Sisa HP: 77/90
+    --- Ronde 2 ---
+    Fadilah [HP 86/100 | Mana 80/80]
+    Lawan: Rakus [HP 77/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Fadilah menyerang Rakus dengan damage 13.
+      [Boss] sisa HP 64/90 (fase 1).
+    --- Giliran Lawan ---
+      [Boss] fase 1 berjalan normal
+    > Rakus menyerang Fadilah dengan damage 14.
+      [Pahlawan] sisa HP 72/100.
+    Rakus menyerang! Sisa HP: 64/90
+    --- Ronde 3 ---
+    Fadilah [HP 72/100 | Mana 80/80]
+    Lawan: Rakus [HP 64/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Fadilah menyerang Rakus dengan damage 13.
+      [Boss] HP 51/90 -> FASE BERUBAH dari 1 ke 2!
+    --- Giliran Lawan ---
+      [Boss] fase 2 berjalan normal
+    > Rakus menyerang Fadilah dengan damage 19.
+      [Pahlawan] sisa HP 53/100.
+    Rakus menyerang! Sisa HP: 51/90
+    --- Ronde 4 ---
+    Fadilah [HP 53/100 | Mana 80/80]
+    Lawan: Rakus [HP 51/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Fadilah menyerang Rakus dengan damage 13.
+      [Boss] sisa HP 38/90 (fase 2).
+    --- Giliran Lawan ---
+      [Boss] fase 2 berjalan normal
+    > Rakus menyerang Fadilah dengan damage 19.
+      [Pahlawan] sisa HP 34/100.
+    Rakus menyerang! Sisa HP: 38/90
+      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 64/100.
+    (Otomatis memakai ramuan herbal)
+    --- Ronde 5 ---
+    Fadilah [HP 64/100 | Mana 80/80]
+    Lawan: Rakus [HP 38/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Fadilah menyerang Rakus dengan damage 13.
+      [Boss] HP 25/90 -> FASE BERUBAH dari 2 ke 3!
+    --- Giliran Lawan ---
+      [Boss] fase 3 berjalan normal
+    > Rakus menyerang Fadilah dengan damage 24.
+      [Pahlawan] sisa HP 40/100.
+    Rakus menyerang! Sisa HP: 25/90
+      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 70/100.
+    (Otomatis memakai ramuan herbal)
+    --- Ronde 6 ---
+    Fadilah [HP 70/100 | Mana 80/80]
+    Lawan: Rakus [HP 25/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+    > Fadilah menyerang Rakus dengan damage 13.
+      [Boss] sisa HP 12/90 (fase 3).
+      [Boss] Rakus memasuki MODE AMUKAN!
+    --- Giliran Lawan ---
+      [Boss] fase 3 AMUKAN -> bonus +40
+    > Rakus menyerang Fadilah dengan damage 34.
+      [Pahlawan] sisa HP 36/100.
+      [Boss] mode amukan -> serangan kedua menyusul!
+      [Boss] fase 3 AMUKAN -> bonus +40
+    > Rakus menyerang Fadilah dengan damage 34.
+      [Pahlawan] HP tersisa 2 -> mode bertahan otomatis AKTIF.
+    Rakus menyerang! Sisa HP: 12/90
+      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 32/100.
+    (Otomatis memakai ramuan herbal)
+    --- Ronde 7 ---
+    Fadilah [HP 32/100 | Mana 80/80]
+    Lawan: Rakus [HP 12/90]
+
+    === AKSI PAHLAWAN ===
+    1. Serang
+    2. Pertahanan
+    3. Pakai Item
+    4. Pakai Skill
+    5. Lari
+    Pilih aksi (1-5): (tanpa input -> otomatis Serang)
+    -> Kamu memilih: Serang
+    [Pahlawan] memilih Serang...
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      [Pahlawan] mode bertahan aktif -> kekuatan dibagi dua
+    > Fadilah menyerang Rakus dengan damage 6.
+      [Boss] sisa HP 6/90 (fase 3).
+    --- Giliran Lawan ---
+      [Boss] fase 3 AMUKAN -> bonus +40
+    > Rakus menyerang Fadilah dengan damage 34.
+      [Pahlawan] Fadilah gugur melawan Rakus.
+    Rakus menyerang! Sisa HP: 6/90
+    ==============================
+    === HASIL AKHIR ===
+    Ronde terpakai: 7
+    Sisa HP pahlawan: 0
+    Sisa HP lawan: 6
+    Hasil: PAHLAWAN KALAH
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      [Pahlawan] HP kritis -> semangat juang +25
+    Status akhir pahlawan : Pahlawan[PHL-FADILAH | Fadilah | elemen=Cahaya | Lv.1 | HP 0/100 | kekuatan=79] <Ksatria Soedirman | mana 80/80 | ramuan 2 | koin 0 | lahir di Kota A>
+      [Boss] fase 3 AMUKAN -> bonus +40
+    Status akhir lawan    : Boss[BOS-RAKUS | Rakus | elemen=Bayangan | Lv.1 | HP 6/90 | kekuatan=136] <Raja Bayangan | fase 3/3 | enrage=true>
+      [Pahlawan] mana 80 cukup -> bonus sihir +15
+      [Pahlawan] HP kritis -> semangat juang +25
+    Guild Ksatria Soedirman memiliki 1 anggota, kekuatan total 79.
+    Hasil: PAHLAWAN KALAH
+
+==========================================================
+  RINGKASAN PEMENUHAN 10 PERSYARATAN TEKNIS
+==========================================================
+  [1]  State & Behavior      Karakter + 3 subclass
+  [2]  Immutability          5 konstanta + 2 atribut private final
+  [3]  Enkapsulasi           semua atribut private + 6 konstruktor
+  [4]  Inheritance           Pahlawan/Monster/Boss extends Karakter
+  [5]  Super Chaining        super(...) + super.naikLevel()/serang()
+  [6]  Method Overriding     hitungKekuatanTotal, terimaSerangan, toString
+  [7]  Abstract Class        Karakter abstract + 2 abstract method
+  [8]  Percabangan           mana, HP kritis, mengamuk, fase boss
+  [9]  Polimorfisme          Attackable/Levelable/ItemUsable + array
+  [10] Multiple Interface    Pahlawan implements 3 interface
+==========================================================
+  SELESAI. Jalankan 'java -cp bin Main game' untuk bermain.
+==========================================================
