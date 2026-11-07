@@ -146,8 +146,8 @@
     Karakter tidak dapat diinstansiasi langsung:
       // Karakter k = new Karakter("X");  -> error: Karakter is abstract
   -- Daftar abstract method yang wajib diimplementasikan subclass
-      abstract int hitungKekuatanTotal(...)
       abstract void terimaSerangan(...)
+      abstract int hitungKekuatanTotal(...)
   -- Setiap subclass memberikan implementasi konkret
       [Pahlawan] mana 80 cukup -> bonus sihir +15
     Pahlawan.hitungKekuatanTotal() = 50
@@ -194,19 +194,19 @@
   UJI 9 : [9] POLIMORFISME INTERFACE - referensi bertipe interface
 ==========================================================
   -- Bentuk literal: NamaInterface obj = new Subclass();
-    Attackable penyerang = hero;  -> isAlive() = true
+    Attackable penyerang = new Pahlawan(...);  -> isAlive() = true
       [Pahlawan] mana 80 cukup -> bonus sihir +15
     > Sena menyerang Gondoruwo dengan damage 12.
       [Monster] sisa HP 88/100.
-    Levelable penumbuh   = hero;  -> level = 1
-    [*] Sena memperoleh 100 exp (total 100).
-    [+] Sena NAIK LEVEL menjadi 2 (HP maksimal 120).
-      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 80.
-    ItemUsable pemakai   = hero;  -> jumlah item = 5
-      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 120/120.
+    Levelable penumbuh   = new Pahlawan(...);  -> level = 1
+    [*] Budi memperoleh 100 exp (total 100).
+    [+] Budi NAIK LEVEL menjadi 2 (HP maksimal 120).
+      [Pahlawan] super.naikLevel() selesai -> mana dipulihkan ke 70.
+    ItemUsable pemakai   = new Pahlawan(...);  -> jumlah item = 5
+      [Pahlawan] memakai Ramuan Herbal -> HP menjadi 100/100.
   -- Dynamic dispatch: array bertipe superclass, tiap elemen memakai override-nya sendiri
       [Pahlawan] mana 80 cukup -> bonus sihir +15
-    Sena (Pahlawan) -> kekuatan 55
+    Sena (Pahlawan) -> kekuatan 50
       [Monster] masih tenang -> kekuatan normal
     Gondoruwo (Monster) -> kekuatan 30
       [Boss] fase 1 berjalan normal
@@ -217,7 +217,7 @@
     [+] Rakus bergabung dengan Ksatria Soedirman.
     Daftar anggota Ksatria Soedirman (3 orang):
       [Pahlawan] mana 80 cukup -> bonus sihir +15
-      - Pahlawan[PHL-SENA | Sena | elemen=Cahaya | Lv.2 | HP 120/120 | kekuatan=55] <Ksatria | mana 80/80 | ramuan 4 | koin 0 | lahir di Kota A>
+      - Pahlawan[PHL-SENA | Sena | elemen=Cahaya | Lv.1 | HP 100/100 | kekuatan=50] <Ksatria | mana 80/80 | ramuan 5 | koin 0 | lahir di Kota A>
       [Monster] masih tenang -> kekuatan normal
       - Monster[MNS-GONDORUWO | Gondoruwo | elemen=Kegelapan | Lv.1 | HP 88/100 | kekuatan=30] <habitat=Gua | keganasan=2 | mengamuk=false>
       [Boss] fase 1 berjalan normal
@@ -225,7 +225,7 @@
       [Pahlawan] mana 80 cukup -> bonus sihir +15
       [Monster] masih tenang -> kekuatan normal
       [Boss] fase 1 berjalan normal
-    total kekuatan guild = 151
+    total kekuatan guild = 146
 
 ==========================================================
   UJI 10 : [10] MULTIPLE INTERFACE - implements lebih dari satu interface

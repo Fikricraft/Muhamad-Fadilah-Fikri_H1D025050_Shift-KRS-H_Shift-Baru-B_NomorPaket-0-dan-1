@@ -31,7 +31,7 @@ cd "H1D025050_Muhamad Fadilah Fikri_RESPONSI AKHIR PBO"
 rmdir /s /q bin 2>nul
 mkdir bin
 javac -d bin src\*.java
-java -cp bin Main
+java -cp bin Main game
 ```
 
 Atau langsung pakai skrip:
@@ -75,9 +75,9 @@ Akun demo sudah tersedia otomatis setiap kali program dijalankan:
 | `user` | `pass` |
 
 Jalankan `java -cp bin Main game`, pilih **2. Masuk (login)**, lalu masukkan
-`user` sebagai username dan `pass` sebagai kata sandi. Akun ini hanya akun demo
-lokal di memori; akun baru yang dibuat selama program berjalan juga tidak
-disimpan setelah program ditutup.
+`user` sebagai username dan `pass` sebagai kata sandi. Akun demo ini tersedia di
+komputer yang menjalankan game; akun baru yang dibuat juga tersimpan permanen
+(lihat bagian Penyimpanan akun di bawah).
 
 Kalau mau menyimpan output ke berkas:
 
@@ -101,7 +101,6 @@ src/
 ├── Monster.java         musuh biasa
 ├── Boss.java            musuh utama, 3 fase
 ├── Item.java            item dasar
-├── ItemUsable.java      item yang habis dipakai (ramuan, sirop)
 ├── Equipment.java       superclass senjata dan armor
 ├── Weapon.java          senjata
 ├── Armor.java           armor
@@ -202,7 +201,6 @@ cuma klaim, jadi tiap persyaratan bisa ditunjukkan satu per satu:
 | `Monster` | Musuh, mengamuk saat HP di bawah 40% |
 | `Boss` | Musuh utama, 3 fase, menyerang dua kali saat amukan |
 | `Item` | Item dasar |
-| `ItemUsable` | Item habis pakai |
 | `Equipment` | Superclass senjata dan armor |
 | `Weapon` | Senjata, bonus kekuatan |
 | `Armor` | Armor, nilai pelindung |
@@ -234,9 +232,9 @@ setelah itu masuk ke dunia game.
 - Pilihan **7. Info akun / Logout** menampilkan username, status sesi, jumlah
   akun terdaftar, lalu bisa mengakhiri sesi.
 
-Akun disimpan di memori selama program berjalan (HashMap statis di dalam
-`Akun`). Jadi akun yang dibuat berlaku sepanjang satu sesi program, bukan antar
-jalankan.
+Akun yang dibuat disimpan permanen ke berkas `akun.properties` di folder project,
+jadi tetap bisa dipakai login setelah program ditutup dan dijalankan lagi. Akun
+demo `user` / `pass` dan akun yang sudah ada dimuat otomatis saat program mulai.
 
 ### Peta dunia
 

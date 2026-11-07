@@ -312,15 +312,15 @@ public class Main {
         Boss boss = new Boss("Rakus", 40, "Raja", 3);
 
         sub("Bentuk literal: NamaInterface obj = new Subclass();");
-        Attackable penyerang = hero;
-        Levelable penumbuh = hero;
-        ItemUsable pemakai = hero;
+        Attackable penyerang = new Pahlawan("Sena", 30, "Ksatria", 80);
+        Levelable penumbuh = new Pahlawan("Budi", 28, "Pemanah", 70);
+        ItemUsable pemakai = new Pahlawan("Citra", 26, "Penyihir", 75);
 
-        System.out.println("    Attackable penyerang = hero;  -> isAlive() = " + penyerang.isAlive());
+        System.out.println("    Attackable penyerang = new Pahlawan(...);  -> isAlive() = " + penyerang.isAlive());
         penyerang.serang(monster);
-        System.out.println("    Levelable penumbuh   = hero;  -> level = " + penumbuh.getLevel());
+        System.out.println("    Levelable penumbuh   = new Pahlawan(...);  -> level = " + penumbuh.getLevel());
         penumbuh.tambahExp(100);
-        System.out.println("    ItemUsable pemakai   = hero;  -> jumlah item = " + pemakai.getJumlahItem());
+        System.out.println("    ItemUsable pemakai   = new Pahlawan(...);  -> jumlah item = " + pemakai.getJumlahItem());
         pemakai.gunakanItem(new Item("ITM-01", "Ramuan Herbal", Item.Jenis.PENYEMBUH, 25));
 
         sub("Dynamic dispatch: array bertipe superclass, tiap elemen memakai override-nya sendiri");
