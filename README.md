@@ -46,7 +46,7 @@ compile-run.bat
 cd "H1D025050_Muhamad Fadilah Fikri_RESPONSI AKHIR PBO"
 rm -rf bin && mkdir -p bin
 javac -d bin src/*.java
-java -cp bin Main
+java -cp bin Main game
 ```
 
 Atau:
@@ -54,6 +54,9 @@ Atau:
 ```bash
 chmod +x compile-run.sh && ./compile-run.sh
 ```
+
+Kedua skrip mengompilasi dulu, lalu menjalankan mode pembuktian dan mencetak
+perintah untuk masuk mode game di akhir.
 
 ### Dua mode
 
