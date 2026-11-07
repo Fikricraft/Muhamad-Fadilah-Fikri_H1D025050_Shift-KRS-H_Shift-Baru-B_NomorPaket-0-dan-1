@@ -1,4 +1,4 @@
-# Responsi Akhir PBO — Petualangan Lembah Soedirman
+# Responsi Akhir PBO: Petualangan Lembah Soedirman
 
 ## Identitas
 
@@ -10,8 +10,8 @@
 | Mata kuliah | Praktikum Pemrograman Berorientasi Objek |
 | Tugas | Responsi akhir |
 
-Digit terakhir NIM adalah **0**. Pada tabel tema di lembar penugasan, digit 0
-dan 1 jatuh ke tema **Sistem Game**. Jadi project ini berupa game.
+Digit terakhir NIM 0. Pada tabel tema di lembar penugasan, digit 0 dan 1 jatuh
+ke tema Sistem Game, jadi project ini berupa game.
 
 Gamenya diberi nama Petualangan Lembah Soedirman. Bentuknya pertarungan
 turn-based di terminal, lengkap dengan karakter, naik level, item, peralatan,
@@ -21,8 +21,8 @@ toko, quest, peta dunia, akun pemain, dan guild.
 
 ## Compile dan run
 
-Butuh JDK 17 ke atas. Diuji pakai OpenJDK 25. Tidak ada library tambahan,
-cukup Java Standard Library.
+Butuh JDK 17 ke atas. Pengujian dilakukan di OpenJDK 25.0.4.1. Tidak ada
+library tambahan, semuanya dari Java Standard Library.
 
 ### Windows
 
@@ -74,10 +74,10 @@ Akun demo sudah tersedia otomatis setiap kali program dijalankan:
 |---|---|
 | `user` | `pass` |
 
-Jalankan `java -cp bin Main game`, pilih **2. Masuk (login)**, lalu masukkan
-`user` sebagai username dan `pass` sebagai kata sandi. Akun demo ini tersedia di
-komputer yang menjalankan game; akun baru yang dibuat juga tersimpan permanen
-(lihat bagian Penyimpanan akun di bawah).
+Jalankan `java -cp bin Main game`, pilih 2. Masuk (login), lalu isi username
+`user` dan kata sandi `pass`. Akun demo ini dibuat di komputer yang menjalankan
+game, dan akun baru yang kamu buat ikut tersimpan permanen. Rinciannya ada di
+bagian Penyimpanan akun.
 
 Kalau mau menyimpan output ke berkas:
 
@@ -142,7 +142,7 @@ Screenshot terbaru: login akun demo `user`, lalu tampilan awal game setelah berh
 
 ![Screenshot terbaru akhir](screenshot-output-baru-2.png)
 
-Screenshot terbaru: menu **Info akun / Logout** yang menampilkan username `user`,
+Screenshot terbaru: menu Info akun / Logout yang menampilkan username `user`,
 status login, jumlah akun terdaftar, dan konfirmasi logout.
 
 Semua screenshot terbaru dihasilkan dari sesi game teruji dengan akun demo
@@ -225,19 +225,27 @@ setelah itu masuk ke dunia game.
 
 ### Akun dan sesi
 
-- Pilih **Buat akun baru** lalu isi username dan sandi. Username tidak boleh
-  kosong dan tidak boleh sama dengan yang sudah terdaftar.
-- Pilih **Masuk** untuk login ke akun yang sudah ada. Sandi harus cocok.
-- Setelah login, header menu utama menampilkan username yang sedang aktif.
-- Pilihan **7. Ganti karakter aktif** menukar hero yang dipakai: battle, toko,
-  inn, inventori, dan skor akhir mengikuti karakter aktif yang baru. Karakter
-  yang pingsan (HP 0) tidak bisa dipakai sampai dipulihkan di Inn.
-- Pilihan **8. Info akun / Logout** menampilkan username, status sesi, jumlah
-  akun terdaftar, lalu bisa mengakhiri sesi.
+Menu akun punya tiga pilihan:
 
-Akun yang dibuat disimpan permanen ke berkas `akun.properties` di folder project,
-jadi tetap bisa dipakai login setelah program ditutup dan dijalankan lagi. Akun
-demo `user` / `pass` dan akun yang sudah ada dimuat otomatis saat program mulai.
+| No | Pilihan |
+|---|---|
+| 1 | Buat akun baru (username) |
+| 2 | Masuk (login) |
+| 0 | Keluar |
+
+Buat akun baru: username tidak boleh kosong dan tidak boleh sama dengan yang
+sudah terdaftar. Masuk: sandi harus cocok dengan akun yang terdaftar. Setelah
+login, header menu utama menampilkan username yang sedang aktif.
+
+Dua pilihan di menu utama berhubungan langsung dengan sesi:
+
+- 7. Ganti karakter aktif (switch character) menukar hero yang dipakai. Battle,
+  toko, inn, inventori, dan skor akhir mengikuti karakter aktif yang baru.
+  Karakter yang pingsan (HP 0) tidak bisa dipakai sampai dipulihkan di Inn.
+- 8. Info akun / Logout menampilkan username, status sesi, dan jumlah akun
+  terdaftar, lalu bisa mengakhiri sesi.
+
+Penyimpanan akun dibahas di bagian Penyimpanan akun.
 
 ### Peta dunia
 
@@ -251,14 +259,14 @@ Menu di tiap lokasi:
 | No | Menu | Fungsi |
 |---|---|---|
 | 1 | Jelajahi lingkungan | Encounter acak. Desa aman, hutan/gua/dungeon ada monster, Benteng Boss ada Rakus |
-| 2 | Toko peralatan | Beli senjata, armor, aksesori, dan ramuan dengan koin |
-| 3 | Papan quest | Lihat quest utama dan progress |
-| 4 | Inn | Pulihkan satu atau semua anggota party |
+| 2 | Buka Toko Peralatan | Beli senjata, armor, aksesori, dan ramuan dengan koin |
+| 3 | Papan Quest (tugas) | Lihat quest utama dan progress |
+| 4 | Inn (istirahat & pulihkan) | Pulihkan satu atau semua anggota party |
 | 5 | Pindah lokasi | Masukkan kode lokasi tujuan |
-| 6 | Kelola inventori | Ganti senjata dan armor per karakter |
-| 7 | Ganti karakter aktif | Switch character: menukar hero yang dipakai di battle |
-| 8 | Info akun / logout | Lihat info akun dan akhiri sesi |
-| 0 | Keluar | Akhiri permainan, tampilkan skor |
+| 6 | Kelola Inventori (senjata, armor, item) | Ganti senjata dan armor per karakter |
+| 7 | Ganti karakter aktif (switch character) | Menukar hero yang dipakai di battle |
+| 8 | Info akun / Logout | Lihat info akun dan akhiri sesi |
+| 0 | Keluar ke padepokan | Akhiri permainan, tampilkan skor |
 
 ### Battle
 
@@ -285,14 +293,15 @@ Tiap ronde menampilkan HP, mana, dan musuh yang masih hidup.
 
 ## Penyimpanan akun
 
-Akun yang dibuat sekarang disimpan otomatis ke file `akun.properties` di folder
-project. Saat program dijalankan lagi, file tersebut dibaca kembali sehingga
-username dan password tetap bisa digunakan untuk login. Password disimpan dalam
-bentuk hash SHA-256. File `akun.properties` sengaja masuk `.gitignore` karena
-berisi data akun lokal pada komputer yang menjalankan game.
+`Akun` menyimpan daftar pemain di `HashMap` statis, lalu menuliskannya ke
+`akun.properties` di folder project setiap kali ada akun baru. Saat program
+dijalankan lagi, file itu dibaca kembali sehingga username dan password tetap
+bisa dipakai login. Password disimpan sebagai hash SHA-256, bukan teks biasa.
 
-Jika project dipindahkan ke komputer lain, akun lokal tidak ikut pindah; buat
-akun baru di komputer tersebut atau salin file `akun.properties` secara manual.
+File `akun.properties` sengaja masuk `.gitignore` karena isinya data akun lokal
+di komputer yang menjalankan game. Kalau project dipindah ke komputer lain,
+akun lokal tidak ikut pindah: buat akun baru di sana atau salin file tersebut
+secara manual.
 
 ---
 
@@ -300,11 +309,8 @@ akun baru di komputer tersebut atau salin file `akun.properties` secara manual.
 
 - Atribut `private final` sengaja tidak diberi setter, sesuai ketentuan
   immutability. Atribut yang boleh berubah tetap punya getter dan setter.
-- Kompilasi bersih tanpa warning dengan `javac -Xlint:all`.
+- `javac -Xlint:all -d bin src/*.java` selesai tanpa keluaran dan exit 0 di
+  OpenJDK 25.0.4.1, jadi tidak ada warning yang perlu dibersihkan.
 - `Barang` dipisah dari `Shop` biar tidak memicu auxiliary class warning.
 - `AksiBattle` dibuat enum supaya daftar aksi battle dipakai bersama oleh
   `Pertarungan` dan `PartyBattle`.
-- `Akun` memakai penyimpanan `HashMap` statis dan berkas `akun.properties` sehingga
-  akun baru tetap tersedia setelah program ditutup dan dijalankan kembali. Kata
-  sandi disimpan sebagai hash SHA-256, bukan teks biasa. Berkas ini otomatis dibuat
-  di folder kerja saat akun pertama kali disimpan.
