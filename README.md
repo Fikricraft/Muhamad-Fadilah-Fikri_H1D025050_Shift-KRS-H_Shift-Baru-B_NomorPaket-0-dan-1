@@ -229,7 +229,10 @@ setelah itu masuk ke dunia game.
   kosong dan tidak boleh sama dengan yang sudah terdaftar.
 - Pilih **Masuk** untuk login ke akun yang sudah ada. Sandi harus cocok.
 - Setelah login, header menu utama menampilkan username yang sedang aktif.
-- Pilihan **7. Info akun / Logout** menampilkan username, status sesi, jumlah
+- Pilihan **7. Ganti karakter aktif** menukar hero yang dipakai: battle, toko,
+  inn, inventori, dan skor akhir mengikuti karakter aktif yang baru. Karakter
+  yang pingsan (HP 0) tidak bisa dipakai sampai dipulihkan di Inn.
+- Pilihan **8. Info akun / Logout** menampilkan username, status sesi, jumlah
   akun terdaftar, lalu bisa mengakhiri sesi.
 
 Akun yang dibuat disimpan permanen ke berkas `akun.properties` di folder project,
@@ -253,7 +256,8 @@ Menu di tiap lokasi:
 | 4 | Inn | Pulihkan satu atau semua anggota party |
 | 5 | Pindah lokasi | Masukkan kode lokasi tujuan |
 | 6 | Kelola inventori | Ganti senjata dan armor per karakter |
-| 7 | Info akun / logout | Lihat info akun dan akhiri sesi |
+| 7 | Ganti karakter aktif | Switch character: menukar hero yang dipakai di battle |
+| 8 | Info akun / logout | Lihat info akun dan akhiri sesi |
 | 0 | Keluar | Akhiri permainan, tampilkan skor |
 
 ### Battle

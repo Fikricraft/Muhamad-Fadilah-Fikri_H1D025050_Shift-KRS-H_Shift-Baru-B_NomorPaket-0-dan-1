@@ -509,17 +509,19 @@ public class Main {
         while (jalan) {
             System.out.println();
             System.out.println("----------------------------------------------------------");
-            System.out.println("  " + akun.getUsername() + " - " + Karakter.NAMA_DUNIA);
+            System.out.println("  " + akun.getUsername() + " - " + Karakter.NAMA_DUNIA
+                    + "  [aktif: " + dunia.getHeroAktif().getNama() + "]");
             System.out.println("  Lokasi : " + lokasiSekarang.namaLokasi() + " (" + lokasiSekarang.kodeLokasi() + ")");
             System.out.println("  Koin party: " + hitungKoinParty(dunia.getParty()));
             System.out.println("  Party:");
             for (Pahlawan p : dunia.getParty()) {
-                System.out.println("    - " + p.getNama() + " (Lv." + p.getLevel()
+                System.out.println("    " + (p == dunia.getHeroAktif() ? "*" : "-") + " " + p.getNama() + " (Lv." + p.getLevel()
                         + " | HP " + p.getHp() + "/" + p.getHpMaksimal()
                         + " | mana " + p.getMana() + "/" + p.getManaMaksimal()
                         + " | senjata " + (p.getSenjata() != null ? p.getSenjata().getNama() : "tidak ada")
                         + " | armor " + (p.getArmor() != null ? p.getArmor().getNama() : "tidak ada")
-                        + " | koin " + p.getKoin() + ")");
+                        + " | koin " + p.getKoin() + ")"
+                        + (p == dunia.getHeroAktif() ? "  <- AKTIF" : ""));
             }
             System.out.println("----------------------------------------------------------");
 
@@ -530,7 +532,8 @@ public class Main {
             System.out.println("  4. Inn (istirahat & pulihkan)");
             System.out.println("  5. Pindah lokasi");
             System.out.println("  6. Kelola Inventori (senjata, armor, item)");
-            System.out.println("  7. Info akun / Logout");
+            System.out.println("  7. Ganti karakter aktif (switch character)");
+            System.out.println("  8. Info akun / Logout");
 
             if (lokasiSekarang.kodeLokasi().equals("DES-01")) {
                 System.out.println("     ke: Hutan Pinus / Gua Utara / Dungeon Lembah");
@@ -570,7 +573,7 @@ public class Main {
                     for (Karakter m : musuh) {
                         System.out.println("    - " + m);
                     }
-                    Pahlawan pemimpin = pilihPemimpinTurns(dunia.getParty());
+                    Pahlawan pemimpin = dunia.getHeroAktif();
                     PartyBattle battle = new PartyBattle(pemimpin, musuh, 10);
                     boolean menang = battle.jalankan(sc);
                     if (menang) {
@@ -720,6 +723,14 @@ public class Main {
             } else if (pilihan.equals("6")) {
                 kelolaInventori(sc, hero, teman1, teman2);
             } else if (pilihan.equals("7")) {
+                Pahlawan baru = pilihKarakterAktif(sc, dunia);
+                if (baru != null) {
+                    dunia.setHeroAktif(baru);
+                    hero = baru;
+                    teman1 = anggotaTeman(dunia, hero, 0);
+                    teman2 = anggotaTeman(dunia, hero, 1);
+                }
+            } else if (pilihan.equals("8")) {
                 System.out.println("  === INFO AKUN ===");
                 System.out.println("  Username       : " + akun.getUsername());
                 System.out.println("  Status sesi    : " + (akun.isLogin() ? "login" : "logout"));
@@ -878,17 +889,56 @@ public class Main {
         return items[new java.util.Random().nextInt(items.length)];
     }
 
-    private static Pahlawan pilihPemimpinTurns(List<Pahlawan> party) {
-        Pahlawan pilih = party.get(0);
-        int maxHp = pilih.getHp();
-        for (int i = 1; i < party.size(); i++) {
+    /** Menu memilih karakter aktif (switch character). Mengembalikan null bila batal. */
+    private static Pahlawan pilihKarakterAktif(Scanner sc, World dunia) {
+        List<Pahlawan> party = dunia.getParty();
+        Pahlawan aktif = dunia.getHeroAktif();
+        System.out.println("  === GANTI KARAKTER AKTIF ===");
+        for (int i = 0; i < party.size(); i++) {
             Pahlawan p = party.get(i);
-            if (p.getHp() > maxHp) {
-                maxHp = p.getHp();
-                pilih = p;
+            System.out.println("    [" + (i + 1) + "] " + p.getNama()
+                    + " (Lv." + p.getLevel()
+                    + " | HP " + p.getHp() + "/" + p.getHpMaksimal()
+                    + " | mana " + p.getMana() + "/" + p.getManaMaksimal()
+                    + ")" + (p == aktif ? "  <- sedang aktif" : "")
+                    + (p.isAlive() ? "" : "  (pingsan)"));
+        }
+        System.out.print("  Pilih nomor karakter (0 = batal): ");
+        String masukan;
+        try {
+            masukan = sc.nextLine().trim();
+        } catch (RuntimeException e) {
+            return null;
+        }
+        int idx;
+        try {
+            idx = Integer.parseInt(masukan) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("  [!] Masukan bukan angka.");
+            return null;
+        }
+        if (idx < 0) {
+            return null;
+        }
+        if (idx >= party.size()) {
+            System.out.println("  [!] Nomor tidak valid.");
+            return null;
+        }
+        return party.get(idx);
+    }
+
+    /** Mengambil anggota party selain hero aktif (untuk kelola inventori). */
+    private static Pahlawan anggotaTeman(World dunia, Pahlawan hero, int urutan) {
+        List<Pahlawan> lain = new ArrayList<Pahlawan>();
+        for (Pahlawan p : dunia.getParty()) {
+            if (p != hero) {
+                lain.add(p);
             }
         }
-        return pilih;
+        if (urutan >= 0 && urutan < lain.size()) {
+            return lain.get(urutan);
+        }
+        return null;
     }
 
     private static int hitungKoinParty(List<Pahlawan> party) {

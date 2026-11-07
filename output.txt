@@ -146,8 +146,8 @@
     Karakter tidak dapat diinstansiasi langsung:
       // Karakter k = new Karakter("X");  -> error: Karakter is abstract
   -- Daftar abstract method yang wajib diimplementasikan subclass
-      abstract void terimaSerangan(...)
       abstract int hitungKekuatanTotal(...)
+      abstract void terimaSerangan(...)
   -- Setiap subclass memberikan implementasi konkret
       [Pahlawan] mana 80 cukup -> bonus sihir +15
     Pahlawan.hitungKekuatanTotal() = 50

@@ -25,6 +25,7 @@ public class World {
     private int koin;
     private Location lokasiSekarang;
     private boolean dalamPertarungan;
+    private Pahlawan heroAktif;      // karakter yang sedang dipakai pemain
     private final String tugasUtama;     // misi utama yang harus diselesaikan
 
     /* ---- konstruktor ---- */
@@ -36,6 +37,7 @@ public class World {
         this.inventori = new ArrayList<Item>();
         this.skillDipelajari = new ArrayList<String>();
         this.koin = 100;
+        this.heroAktif = null;  // diisi saat karakter pertama bergabung
         // lokasi awal: Desa Utama (aman)
         this.lokasiSekarang = new Location("DES-01", "Desa Utama",
                 "Pemukiman warga Lembah Soedirman yang tenang.",
@@ -110,6 +112,9 @@ public class World {
         this.party.add(karakter);
         System.out.println("  World: " + karakter.getNama()
                 + " bergabung dengan party.");
+        if (this.heroAktif == null) {
+            this.heroAktif = karakter;
+        }
         return true;
     }
 
@@ -120,14 +125,56 @@ public class World {
         if (this.party.remove(karakter)) {
             System.out.println("  World: " + karakter.getNama()
                     + " dikeluarkan dari party.");
+            if (this.heroAktif == karakter) {
+                this.heroAktif = this.party.isEmpty() ? null : this.party.get(0);
+            }
             return karakter;
         }
         return null;
     }
 
+    /* ---- getter & setter hero aktif (switch character) ---- */
+
+    /** @return karakter yang sedang dipakai pemain. */
+    public Pahlawan getHeroAktif() {
+        if (this.heroAktif == null && !this.party.isEmpty()) {
+            this.heroAktif = this.party.get(0);
+        }
+        return this.heroAktif;
+    }
+
     /**
-     * Menambah koin.
+     * Menukar karakter yang sedang dipakai. Hanya anggota party yang boleh
+     * dijadikan hero aktif; karakter yang pingsan (HP 0) tidak bisa dipilih.
+     *
+     * @return true bila pergantian berhasil.
      */
+    public boolean setHeroAktif(Pahlawan karakter) {
+        if (karakter == null) {
+            System.out.println("  World: karakter tidak valid.");
+            return false;
+        }
+        if (!this.party.contains(karakter)) {
+            System.out.println("  World: " + karakter.getNama()
+                    + " bukan anggota party.");
+            return false;
+        }
+        if (!karakter.isAlive()) {
+            System.out.println("  World: " + karakter.getNama()
+                    + " pingsan (HP 0), tidak bisa dipakai. Pulihkan di Inn dulu.");
+            return false;
+        }
+        if (karakter == this.heroAktif) {
+            System.out.println("  World: " + karakter.getNama()
+                    + " sudah menjadi karakter aktif.");
+            return false;
+        }
+        this.heroAktif = karakter;
+        System.out.println("  World: karakter aktif diganti ke "
+                + karakter.getNama() + ".");
+        return true;
+    }
+
     public void tambahKoin(int jumlah) {
         if (jumlah < 0) {
             this.koin = this.koin + jumlah;  // jumlah negatif = pengurangan
