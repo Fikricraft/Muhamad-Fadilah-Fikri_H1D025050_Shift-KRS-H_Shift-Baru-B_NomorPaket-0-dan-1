@@ -281,6 +281,17 @@ Tiap ronde menampilkan HP, mana, dan musuh yang masih hidup.
 - Monster mengamuk di bawah 40% HP.
 - Boss punya 3 fase dan menyerang dua kali saat amukan.
 
+## Penyimpanan akun
+
+Akun yang dibuat sekarang disimpan otomatis ke file `akun.properties` di folder
+project. Saat program dijalankan lagi, file tersebut dibaca kembali sehingga
+username dan password tetap bisa digunakan untuk login. Password disimpan dalam
+bentuk hash SHA-256. File `akun.properties` sengaja masuk `.gitignore` karena
+berisi data akun lokal pada komputer yang menjalankan game.
+
+Jika project dipindahkan ke komputer lain, akun lokal tidak ikut pindah; buat
+akun baru di komputer tersebut atau salin file `akun.properties` secara manual.
+
 ---
 
 ## Catatan
@@ -291,5 +302,7 @@ Tiap ronde menampilkan HP, mana, dan musuh yang masih hidup.
 - `Barang` dipisah dari `Shop` biar tidak memicu auxiliary class warning.
 - `AksiBattle` dibuat enum supaya daftar aksi battle dipakai bersama oleh
   `Pertarungan` dan `PartyBattle`.
-- `Akun` memakai penyimpanan `HashMap` statis sehingga seluruh akun yang
-  terdaftar tetap ada selama program berjalan.
+- `Akun` memakai penyimpanan `HashMap` statis dan berkas `akun.properties` sehingga
+  akun baru tetap tersedia setelah program ditutup dan dijalankan kembali. Kata
+  sandi disimpan sebagai hash SHA-256, bukan teks biasa. Berkas ini otomatis dibuat
+  di folder kerja saat akun pertama kali disimpan.

@@ -1,3 +1,9 @@
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,11 +17,16 @@ public class Akun {
 
     /* penyimpanan seluruh akun terdaftar, dibagikan lintas objek */
     private static final Map<String, Akun> DAFTAR_AKUN = new HashMap<>();
+    private static final Path FILE_AKUN = Path.of("akun.properties");
 
     /* akun demo untuk pemeriksaan asprak: user / pass */
     static {
-        Akun akunDemo = new Akun("user", "pass");
-        DAFTAR_AKUN.put(akunDemo.username, akunDemo);
+        muatAkun();
+        if (!DAFTAR_AKUN.containsKey("user")) {
+            Akun akunDemo = new Akun("user", hash("pass"));
+            DAFTAR_AKUN.put(akunDemo.username, akunDemo);
+            simpanAkun();
+        }
     }
 
     /* username bersifat kekal, tidak bisa diubah setelah akun dibuat */
@@ -31,6 +42,44 @@ public class Akun {
         this.login = false;
     }
 
+    private static String hash(String teks) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hasil = md.digest(teks.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(hasil);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 tidak tersedia", e);
+        }
+    }
+
+    private static void muatAkun() {
+        if (!Files.exists(FILE_AKUN)) {
+            return;
+        }
+        try {
+            for (String baris : Files.readAllLines(FILE_AKUN, StandardCharsets.UTF_8)) {
+                String[] bagian = baris.split("\\t", 2);
+                if (bagian.length == 2 && !bagian[0].trim().isEmpty()) {
+                    DAFTAR_AKUN.put(bagian[0], new Akun(bagian[0], bagian[1]));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("  [!] Data akun tidak dapat dibaca; mulai dengan akun baru.");
+        }
+    }
+
+    private static void simpanAkun() {
+        try {
+            StringBuilder isi = new StringBuilder();
+            for (Akun akun : DAFTAR_AKUN.values()) {
+                isi.append(akun.username).append('\t').append(akun.password).append(System.lineSeparator());
+            }
+            Files.writeString(FILE_AKUN, isi.toString(), StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            System.out.println("  [!] Data akun gagal disimpan: " + e.getMessage());
+        }
+    }
+
     /**
      * Mendaftarkan akun baru. Gagal bila username kosong atau sudah terpakai.
      *
@@ -43,11 +92,12 @@ public class Akun {
         if (password == null || password.isEmpty()) {
             return null;
         }
-        if (DAFTAR_AKUN.containsKey(username)) {
+        if (DAFTAR_AKUN.containsKey(username.trim())) {
             return null;
         }
-        Akun akun = new Akun(username.trim(), password);
+        Akun akun = new Akun(username.trim(), hash(password));
         DAFTAR_AKUN.put(username.trim(), akun);
+        simpanAkun();
         return akun;
     }
 
@@ -62,7 +112,7 @@ public class Akun {
             return null;
         }
         Akun akun = DAFTAR_AKUN.get(username.trim());
-        if (akun == null || !akun.password.equals(password)) {
+        if (akun == null || !akun.password.equals(hash(password))) {
             return null;
         }
         akun.login = true;

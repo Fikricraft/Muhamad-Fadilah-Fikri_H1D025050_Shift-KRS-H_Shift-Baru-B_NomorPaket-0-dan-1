@@ -13,3 +13,6 @@ out/
 .DS_Store
 Thumbs.db
 desktop.ini
+# Data akun lokal (akun tetap tersimpan di komputer, tidak di-commit)
+akun.properties
+
